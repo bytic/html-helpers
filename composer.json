@@ -1,0 +1,32 @@
+{
+  "name": "bytic/html-helpers",
+  "type": "library",
+  "license": "MIT",
+  "description": "html helpers for bytic framework Edit",
+  "keywords": [  ],
+  "homepage": "https://github.com/ByTIC/html-helpers",
+  "authors": [
+    {
+      "name": "Gabriel Solomon",
+      "email": "hello@gabrielsolomon.ro"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "ByTIC\\Html\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ByTIC\\Html\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^7.1"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.0",
+    "phpunit/phpunit": "^6.2",
+    "mockery/mockery": "^0.9"
+  }
+}
