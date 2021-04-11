@@ -86,7 +86,7 @@ class HtmlBuilder extends DomBuilder
     protected static $trueValueMapping = [
         'readonly' => 'readonly',
         'disabled' => 'disabled',
-        'multiple' => 'true',
+        'multiple' => true,
         'checked' => 'checked',
         'selected' => 'selected',
     ];

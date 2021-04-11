@@ -4,6 +4,7 @@ namespace ByTIC\Html\Tags\Forms;
 
 use ByTIC\Html\Html\HtmlElement;
 use ByTIC\Html\Tags\AbstractTag;
+use Traversable;
 
 /**
  * Class Input
@@ -44,11 +45,10 @@ class Select extends AbstractTag
     public function __construct($name, $options = [], $attribs = [], $selected = null, $multiple = false)
     {
         $attribs['name'] = $name;
+        parent::__construct('select', (array)$options, $attribs);
 
         $this->setSelected($selected);
         $this->setMultiple($multiple);
-
-        parent::__construct('select', (array)$options, $attribs);
     }
 
     /**
@@ -64,6 +64,15 @@ class Select extends AbstractTag
         return new static($name, $options, $attribs, $selected, $multiple);
     }
 
+    public function addOptionsFromTraversable(Traversable $collection, $text = null, $value = null)
+    {
+        foreach ($collection as $item) {
+            $this->option(
+                data_get($item, $text),
+                data_get($item, $value)
+            );
+        }
+    }
 
     /**
      * addOption
@@ -215,7 +224,7 @@ class Select extends AbstractTag
     {
         $this->multiple = $multiple;
 
-        $this->setAttribute('multiple', $multiple ? 'true' : 'false');
+        $this->setAttribute('multiple', (bool)$multiple);
 
         return $this;
     }

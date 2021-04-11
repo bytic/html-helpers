@@ -20,4 +20,11 @@ class SelectTest extends AbstractTest
         $element->option('Option1', 'val1');
         self::assertEquals('<select name="test"><option value="val1">Option1</option></select>', (string)$element);
     }
+
+    public function test_create_multiple()
+    {
+        $element = Select::create('test', [], [], null, true);
+        self::assertInstanceOf(Select::class, $element);
+        self::assertEquals('<select name="test[]" multiple></select>', (string)$element);
+    }
 }

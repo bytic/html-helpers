@@ -23,6 +23,7 @@
   },
   "require": {
     "php": "^7.2|^8.0",
+    "bytic/collection": "^1.0",
     "bytic/utility": "^1.0"
   },
   "require-dev": {
