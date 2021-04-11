@@ -1,10 +1,12 @@
 <?php
 
-namespace ByTIC\Html\Tags;
+namespace ByTIC\Html\Tags\Forms;
+
+use ByTIC\Html\Tags\AbstractTag;
 
 /**
  * Class Input
- * @package ByTIC\Html\Tags
+ * @package ByTIC\Html\Tags\Forms
  */
 class Input extends AbstractTag
 {
@@ -33,6 +35,6 @@ class Input extends AbstractTag
         }
         $options['name'] = $name;
         $options['value'] = $value === null ? null : (string) $value;
-        return static::tag('input', '', $options);
+        return static::tag('input', null, $options);
     }
 }

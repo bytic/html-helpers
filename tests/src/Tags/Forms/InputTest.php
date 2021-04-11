@@ -1,8 +1,8 @@
 <?php
 
-namespace ByTIC\Html\Tests\Tags;
+namespace ByTIC\Html\Tests\Tags\Forms;
 
-use ByTIC\Html\Tags\Input;
+use ByTIC\Html\Tags\Forms\Input;
 use ByTIC\Html\Tests\AbstractTest;
 
 /**
@@ -20,13 +20,15 @@ class InputTest extends AbstractTest
      */
     public function test_hidden($name, $value, $options, $html)
     {
-        self::assertSame($html, Input::hidden($name, $value, $options));
+        $hidden = Input::hidden($name, $value, $options);
+        self::assertInstanceOf(Input::class, $hidden);
+        self::assertEquals($html, (string) $hidden);
     }
 
     public function data_hidden(): array
     {
         return [
-            ['test', 'value', [], '<input type="hidden" name="test" value="value">']
+            ['test', 'value', [], '<input type="hidden" name="test" value="value" />']
         ];
     }
 }
