@@ -31,4 +31,25 @@ class InputTest extends AbstractTest
             ['test', 'value', [], '<input type="hidden" name="test" value="value" />']
         ];
     }
+
+    /**
+     * @param $name
+     * @param $value
+     * @param $options
+     * @param $html
+     * @dataProvider data_date
+     */
+    public function test_date($name, $value, $options, $html)
+    {
+        $hidden = Input::date($name, $value, $options);
+        self::assertInstanceOf(Input::class, $hidden);
+        self::assertEquals($html, (string) $hidden);
+    }
+
+    public function data_date(): array
+    {
+        return [
+            ['test', 'value', [], '<input type="date" name="test" value="value" />']
+        ];
+    }
 }

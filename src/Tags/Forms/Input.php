@@ -22,6 +22,28 @@ class Input extends AbstractTag
     }
 
     /**
+     * @param $name
+     * @param null $value
+     * @param array $options
+     * @return mixed
+     */
+    public static function text($name, $value = null, $options = [])
+    {
+        return static::input('text', $name, $value, $options);
+    }
+
+    /**
+     * @param $name
+     * @param null $value
+     * @param array $options
+     * @return mixed
+     */
+    public static function date($name, $value = null, $options = [])
+    {
+        return static::input('date', $name, $value, $options);
+    }
+
+    /**
      * @param $type
      * @param null $name
      * @param null $value
