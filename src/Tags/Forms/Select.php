@@ -170,12 +170,16 @@ class Select extends AbstractTag
      */
     protected function checkSelected($value)
     {
+        $selected = $this->getSelected();
+        if ($selected === false) {
+            return false;
+        }
         $value = (string)$value;
 
         if ($this->multiple) {
-            return in_array($value, (array)$this->getSelected());
+            return in_array($value, (array) $selected);
         } else {
-            return $value == (string)$this->getSelected();
+            return $value == (string) $selected;
         }
     }
 
