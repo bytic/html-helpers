@@ -8,5 +8,4 @@ namespace ByTIC\Html;
  */
 class HtmlServiceProvider
 {
-
 }

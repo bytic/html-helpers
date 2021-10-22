@@ -130,30 +130,30 @@ class HtmlBuilder extends DomBuilder
                 if (in_array($name, static::$dataAttributes)) {
                     foreach ($value as $n => $v) {
                         if (is_array($v)) {
-                            $html .= " $name-$n='".Json::htmlEncode($v)."'";
+                            $html .= " $name-$n='" . Json::htmlEncode($v) . "'";
                         } elseif (is_bool($v)) {
                             if ($v) {
                                 $html .= " $name-$n";
                             }
                         } elseif ($v !== null) {
-                            $html .= " $name-$n=\"".static::encode($v).'"';
+                            $html .= " $name-$n=\"" . static::encode($v) . '"';
                         }
                     }
                 } elseif ($name === 'class') {
                     if (empty($value)) {
                         continue;
                     }
-                    $html .= " $name=\"".static::encode(implode(' ', $value)).'"';
+                    $html .= " $name=\"" . static::encode(implode(' ', $value)) . '"';
                 } elseif ($name === 'style') {
                     if (empty($value)) {
                         continue;
                     }
-                    $html .= " $name=\"".static::encode(static::cssStyleFromArray($value)).'"';
+                    $html .= " $name=\"" . static::encode(static::cssStyleFromArray($value)) . '"';
                 } else {
-                    $html .= " $name='".Json::htmlEncode($value)."'";
+                    $html .= " $name='" . Json::htmlEncode($value) . "'";
                 }
             } elseif ($value !== null) {
-                $html .= " $name=\"".static::encode($value).'"';
+                $html .= " $name=\"" . static::encode($value) . '"';
             }
         }
 

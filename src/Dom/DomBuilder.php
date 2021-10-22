@@ -8,7 +8,6 @@ namespace ByTIC\Html\Dom;
  */
 class DomBuilder
 {
-
     /**
      * Create a html element.
      *

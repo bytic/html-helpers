@@ -50,8 +50,8 @@ class Input extends AbstractTag
      * @param array $options
      * @return mixed
      */
-    protected static function input($type, $name = null, $value = null, $options = []) {
-
+    protected static function input($type, $name = null, $value = null, $options = [])
+    {
         if (!isset($options['type'])) {
             $options['type'] = $type;
         }

@@ -10,7 +10,6 @@ use ByTIC\Html\Dom\DomElement;
  */
 class HtmlElement extends DomElement
 {
-
     /**
      * toString
      *

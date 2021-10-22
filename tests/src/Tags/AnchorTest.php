@@ -42,5 +42,4 @@ class AnchorTest extends AbstractTest
             (string)$anchor
         );
     }
-
 }
