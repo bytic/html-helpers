@@ -8,5 +8,4 @@ namespace ByTIC\Html\Tags;
  */
 class Tag extends AbstractTag
 {
-
 }
