@@ -14,9 +14,8 @@ abstract class AbstractTag extends HtmlElement
      * @param $name
      * @param string $content
      * @param array $options
-     * @return string
      */
-    public static function tag($name, $content = null, $options = [])
+    public static function tag($name, $content = null, $options = []): AbstractTag
     {
         return (new static($name, $content, $options));
     }
