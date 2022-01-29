@@ -23,13 +23,22 @@ class DomAttributesTest extends AbstractTest
     }
 
     /** @test */
+    public function it_construct_from_object()
+    {
+        $attributes = new DomAttributes(['class' => ['card'], 'disabled' => 'disabled']);
+        $attributes2 = new DomAttributes($attributes);
+
+        static::assertSame($attributes->toString(), $attributes2->toString());
+    }
+
+    /** @test */
     public function it_is_initializable()
     {
         $attributes = new DomAttributes(['class' => ['card'], 'disabled' => 'disabled']);
 
         self::assertInstanceOf(DomAttributes::class, $attributes);
 
-        self::assertSame('card', (string) $attributes->offsetGet('class'));
+        self::assertSame('card', (string)$attributes->offsetGet('class'));
         self::assertTrue($attributes->hasClass('card'));
         self::assertSame('disabled', $attributes->offsetGet('disabled'));
         self::assertEquals('class="card" disabled="disabled"', (string)$attributes);
@@ -75,7 +84,7 @@ class DomAttributesTest extends AbstractTest
         $attributes->addClass('card');
         $attributes->addClass('card--wide');
 
-        static::assertEquals('card card--wide', (string) $attributes->offsetGet('class'));
+        static::assertEquals('card card--wide', (string)$attributes->offsetGet('class'));
         static::assertTrue($attributes->hasClass('card'));
         static::assertEquals('class="card card--wide"', (string)$attributes);
     }
@@ -88,7 +97,7 @@ class DomAttributesTest extends AbstractTest
 
         static::assertSame(
             'foo bar',
-            (string) $attributes->addClass(['foo', 'bar'])->toArray()['class']
+            (string)$attributes->addClass(['foo', 'bar'])->toArray()['class']
         );
     }
 
@@ -96,11 +105,11 @@ class DomAttributesTest extends AbstractTest
     public function it_can_have_a_class_removed_from_it()
     {
         $attributes = new DomAttributes(['class' => ['card', 'card--wide']]);
-        static::assertSame('card card--wide', (string) $attributes->offsetGet('class'));
+        static::assertSame('card card--wide', (string)$attributes->offsetGet('class'));
 
         $attributes->removeClass('card--wide');
 
-        static::assertSame('card', (string) $attributes->offsetGet('class'));
+        static::assertSame('card', (string)$attributes->offsetGet('class'));
         static::assertEquals('class="card"', (string)$attributes);
     }
 
@@ -112,7 +121,7 @@ class DomAttributesTest extends AbstractTest
         $attributes->removeClass('card--wide');
         $attributes->removeClass('card');
 
-        static::assertEmpty((string) $attributes->offsetGet('class'));
+        static::assertEmpty((string)$attributes->offsetGet('class'));
         static::assertEquals('', (string)$attributes);
     }
 

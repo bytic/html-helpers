@@ -9,13 +9,16 @@ use ByTIC\Html\Html\ClassList;
 /**
  *
  */
-class DomAttributes implements \ArrayAccess, \Countable
+class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
 {
 
     /** @var array */
     protected $attributes = [];
 
-    public function __construct(array $attributes = [])
+    /**
+     * @param array|self $attributes
+     */
+    public function __construct($attributes = [])
     {
         $this->setAttributes($attributes);
     }
@@ -47,7 +50,7 @@ class DomAttributes implements \ArrayAccess, \Countable
      *
      * @return $this
      */
-    public function setAttributes(array $attributes): self
+    public function setAttributes($attributes): self
     {
         foreach ($attributes as $attribute => $value) {
             if (is_int($attribute)) {
@@ -290,6 +293,16 @@ class DomAttributes implements \ArrayAccess, \Countable
     public function offsetExists($offset): bool
     {
         return isset($this->attributes[$offset]);
+    }
+
+    /**
+     * Retrieve an external iterator
+     *
+     * @return  \Traversable
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->attributes);
     }
 
     public function toArray(): array
