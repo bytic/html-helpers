@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ByTIC\Html\Dom;
 
 use ByTIC\Html\Html\ClassList;
+use ByTIC\Html\Html\HtmlBuilder;
 
 /**
  *
@@ -363,23 +364,7 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
 
     public function toString(): string
     {
-        if ($this->isEmpty()) {
-            return '';
-        }
-
-        $attributes = $this->attributes;
-
-        // Sorting by attribute name provides predictable output for testing.
-        ksort($attributes);
-
-        $attributeStrings = [];
-
-        foreach ($attributes as $attribute => $value) {
-            $attributeStrings[] = $this->renderAttribute($attribute, $value);
-        }
-        array_filter($attributeStrings);
-
-        return implode(' ', $attributeStrings);
+        return HtmlBuilder::buildAttributes($this->toArray());
     }
 
     public function __toString(): string
@@ -393,32 +378,5 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
     public function count()
     {
         return count($this->attributes);
-    }
-
-    /**
-     * @param $attribute
-     * @param $value
-     * @return string|null
-     */
-    protected function renderAttribute($attribute, $value): ?string
-    {
-        if ($attribute === 'class') {
-            $value = (string)$value;
-            if (empty($value)) {
-                return null;
-            }
-        }
-
-        if (is_null($value) || $value === '') {
-            return $attribute;
-        }
-
-        if (is_array($value)) {
-            $value = array_filter($value);
-            $value = implode(' ', $value);
-        }
-        $value = htmlspecialchars($value, ENT_COMPAT);
-
-        return "{$attribute}=\"{$value}\"";
     }
 }

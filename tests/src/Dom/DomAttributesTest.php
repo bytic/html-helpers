@@ -137,7 +137,7 @@ class DomAttributesTest extends AbstractTest
 
         static::assertEquals((string)$attributes, (string)$attributes_copy);
         static::assertEquals(
-            'aria-description="A description." class="card card--wide" id="card-1"',
+            'id="card-1" class="card card--wide" aria-description="A description."',
             (string)$attributes
         );
 
@@ -147,7 +147,7 @@ class DomAttributesTest extends AbstractTest
 
         static::assertEquals((string)$attributes, (string)$attributes_copy);
         static::assertEquals(
-            'aria-description="A description." class="card card--wide one two three" id="card-1"',
+            'id="card-1" class="card card--wide one two three" aria-description="A description."',
             (string)$attributes
         );
 
@@ -156,7 +156,7 @@ class DomAttributesTest extends AbstractTest
         $attributes_copy->merge('class', ['red', 'blue', 'green']);
         static::assertEquals((string)$attributes, (string)$attributes_copy);
         static::assertEquals(
-            'aria-description="A description." class="card card--wide one two three red blue green" id="card-1"',
+            'id="card-1" class="card card--wide one two three red blue green" aria-description="A description."',
             (string)$attributes
         );
     }
@@ -178,7 +178,7 @@ class DomAttributesTest extends AbstractTest
 
         $only = $attributes->only(['id', 'class']);
 
-        static::assertEquals('class="one two three" id="card"', (string)$only);
+        static::assertEquals('id="card" class="one two three"', (string)$only);
     }
 
     /** @test */

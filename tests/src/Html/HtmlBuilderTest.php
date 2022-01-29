@@ -16,6 +16,6 @@ class HtmlBuilderTest extends AbstractTest
     public function test_buildAttributes_from_object()
     {
         $attributes = new DomAttributes(['class' => 'test foe', 'id' => 'test']);
-        self::assertSame(' id="test" class="test foe"', HtmlBuilder::buildAttributes($attributes));
+        self::assertSame('id="test" class="test foe"', HtmlBuilder::buildAttributes($attributes));
     }
 }

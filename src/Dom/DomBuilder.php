@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ByTIC\Html\Dom;
 
 use Nip\Utility\Arr;
+use Nip\Utility\Json;
 
 /**
  * Class DomBuilder
@@ -15,10 +16,10 @@ class DomBuilder
     /**
      * Create a html element.
      *
-     * @param string $name      Element tag name.
-     * @param mixed  $content   Element content.
-     * @param array  $attribs   Element attributes.
-     * @param bool   $forcePair Force pair it.
+     * @param string $name Element tag name.
+     * @param mixed $content Element content.
+     * @param array $attribs Element attributes.
+     * @param bool $forcePair Force pair it.
      *
      * @return  string Created element string.
      */
@@ -28,7 +29,8 @@ class DomBuilder
 
         $tag = '<' . $name;
 
-        $tag .= static::buildAttributes($attribs);
+        $attribs = static::buildAttributes($attribs);
+        $tag .= $attribs ? ' ' . $attribs : '';
 
         if ($content !== null) {
             $tag .= '>' . $content . '</' . $name . '>';
@@ -42,29 +44,75 @@ class DomBuilder
     /**
      * buildAttributes
      *
-     * @param array $attribs
+     * @param array|DomAttributes $attribs
      *
      * @return  string
      */
     public static function buildAttributes($attribs)
     {
-        $string = '';
+        $attribs = static::prepareAttributes($attribs);
+
+        $string = [];
 
         foreach ($attribs as $key => $value) {
-            if ($value === true) {
-                $string .= ' ' . $key;
+            $string = array_merge($string, static::renderAttribute($key, $value));
+        }
+        $string = array_filter($string);
 
-                continue;
-            }
+        return implode(' ', $string);
+    }
 
-            if ($value === null || $value === false) {
-                continue;
-            }
-
-            $string .= ' ' . $key . '=' . static::quote($value);
+    /**
+     * @param $attribute
+     * @param $value
+     * @return string[]
+     */
+    protected static function renderAttribute($attribute, $value)
+    {
+        if ($value === null || $value === false) {
+            return [];
         }
 
-        return $string;
+        if ($value === true) {
+            return [$attribute];
+        }
+
+        if (is_array($value)) {
+            return static::renderAttributeArray($attribute, $value);
+        }
+
+        return [$attribute . '=' . static::quote($value)];
+    }
+
+    /**
+     * @param $attribute
+     * @param $value
+     * @return string[]
+     */
+    protected static function renderAttributeArray($attribute, $value): array
+    {
+        return [" $attribute='" . Json::htmlEncode($value) . "'"];
+    }
+
+    /**
+     * @param $attributes
+     * @return array|mixed
+     */
+    protected static function prepareAttributes($attributes)
+    {
+        $attributes = is_object($attributes) ? $attributes->toArray() : $attributes;
+        return static::orderAttributes($attributes);
+    }
+
+    /**
+     * @param $attributes
+     * @return array|mixed
+     */
+    protected static function orderAttributes($attributes)
+    {
+        // Sorting by attribute name provides predictable output for testing.
+        ksort($attributes);
+        return $attributes;
     }
 
     /**
@@ -76,6 +124,10 @@ class DomBuilder
      */
     public static function quote($value)
     {
+        if (is_array($value)) {
+            $value = implode(' ', $value);
+        }
+
         return '"' . $value . '"';
     }
 }

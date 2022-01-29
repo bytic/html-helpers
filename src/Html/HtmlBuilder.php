@@ -98,10 +98,10 @@ class HtmlBuilder extends DomBuilder
     /**
      * Create a html element.
      *
-     * @param string $name      Element tag name.
-     * @param mixed  $content   Element content.
-     * @param array  $attribs   Element attributes.
-     * @param bool   $forcePair Force pair it.
+     * @param string $name Element tag name.
+     * @param mixed $content Element content.
+     * @param array $attribs Element attributes.
+     * @param bool $forcePair Force pair it.
      *
      * @return  string Created element string.
      */
@@ -115,56 +115,52 @@ class HtmlBuilder extends DomBuilder
     /**
      * buildAttributes
      *
-     * @param array|DomAttributes $attribs
-     *
-     * @return  string
+     * @param $attribute
+     * @param $value
+     * @return  string[]
      */
-    public static function buildAttributes($attribs): string
+    public static function renderAttributeArray($attribute, $value): array
     {
-        $attribs = is_object($attribs) ? $attribs->toArray() : $attribs;
-
-        $attribs = static::orderAttributes($attribs);
-        $attribs = static::mapAttrValues($attribs);
-
-        $html = '';
-        foreach ($attribs as $name => $value) {
-            if (is_bool($value)) {
-                if ($value) {
-                    $html .= " $name";
+        if (in_array($attribute, static::$dataAttributes)) {
+            $return = [];
+            foreach ($value as $dataKey => $dataValue) {
+                if (is_array($dataValue)) {
+                    $return[] = "$attribute-$dataKey='" . Json::htmlEncode($dataValue) . "'";
+                } elseif (is_bool($dataValue)) {
+                    if ($dataValue) {
+                        $return[] = " $attribute-$dataKey";
+                    }
+                } elseif ($dataValue !== null) {
+                    $return[] = "$attribute-$dataKey=\"" . static::encode($dataValue) . '"';
                 }
-            } elseif (is_array($value)) {
-                if (in_array($name, static::$dataAttributes)) {
-                    foreach ($value as $n => $v) {
-                        if (is_array($v)) {
-                            $html .= " $name-$n='" . Json::htmlEncode($v) . "'";
-                        } elseif (is_bool($v)) {
-                            if ($v) {
-                                $html .= " $name-$n";
-                            }
-                        } elseif ($v !== null) {
-                            $html .= " $name-$n=\"" . static::encode($v) . '"';
-                        }
-                    }
-                } elseif ($name === 'class') {
-                    if (empty($value)) {
-                        continue;
-                    }
-                    $html .= " $name=\"" . static::encode(implode(' ', $value)) . '"';
-                } elseif ($name === 'style') {
-                    if (empty($value)) {
-                        continue;
-                    }
-                    $html .= " $name=\"" . static::encode(static::cssStyleFromArray($value)) . '"';
-                } else {
-                    $html .= " $name='" . Json::htmlEncode($value) . "'";
-                }
-            } elseif ($value !== null) {
-                $value = (string) $value;
-                $html .= " $name=\"" . static::encode($value) . '"';
             }
+            return $return;
         }
 
-        return $html;
+        if ($attribute === 'class') {
+            if (empty($value)) {
+                return [];
+            }
+            return ["$attribute=\"" . static::encode(implode(' ', $value)) . '"'];
+        }
+        if ($attribute === 'style') {
+            if (empty($value)) {
+                return [];
+            }
+            return ["$attribute=\"" . static::encode(static::cssStyleFromArray($value)) . '"'];
+        }
+
+        return parent::renderAttributeArray($attribute, $value);
+    }
+
+    /**
+     * @param $attributes
+     * @return array|mixed
+     */
+    protected static function prepareAttributes($attributes)
+    {
+        $attributes = parent::prepareAttributes($attributes);
+        return static::mapAttrValues($attributes);
     }
 
     /**
@@ -174,6 +170,8 @@ class HtmlBuilder extends DomBuilder
     protected static function orderAttributes($attributes)
     {
         if (count($attributes) > 1) {
+            $attributes = parent::orderAttributes($attributes);
+
             $sorted = [];
             foreach (static::$attributeOrder as $name) {
                 if (isset($attributes[$name])) {
@@ -199,6 +197,66 @@ class HtmlBuilder extends DomBuilder
         }
 
         return $attribs;
+    }
+
+    /**
+     * Converts a CSS style array into a string representation.
+     *
+     * For example,
+     *
+     * ```php
+     * // width: 100px; height: 200px;
+     * Html::cssStyleFromArray(['width' => '100px', 'height' => '200px']);
+     * ```
+     *
+     * @param array<string, string> $style The CSS style array. The array keys are the CSS property names,
+     * and the array values are the corresponding CSS property values.
+     *
+     * @return string|null The CSS style string. If the CSS style is empty, a null will be returned.
+     * @see cssStyleToArray()
+     *
+     */
+    public static function cssStyleFromArray(array $style): ?string
+    {
+        $result = '';
+        foreach ($style as $name => $value) {
+            $result .= "$name: $value; ";
+        }
+
+        // Return null if empty to avoid rendering the "style" attribute.
+        return $result === '' ? null : rtrim($result);
+    }
+
+    /**
+     * Converts a CSS style string into an array representation.
+     *
+     * The array keys are the CSS property names, and the array values are the corresponding CSS property values.
+     *
+     * For example,
+     *
+     * ```php
+     * // ['width' => '100px', 'height' => '200px']
+     * HtmlBuilder::cssStyleToArray('width: 100px; height: 200px;');
+     * ```
+     *
+     * @param string|\Stringable $style The CSS style string.
+     *
+     * @return array The array representation of the CSS style.
+     * @psalm-return array<string, string>
+     * @see cssStyleFromArray()
+     *
+     */
+    public static function cssStyleToArray($style): array
+    {
+        $result = [];
+        foreach (explode(';', (string)$style) as $property) {
+            $property = explode(':', $property);
+            if (count($property) > 1) {
+                $result[trim($property[0])] = trim($property[1]);
+            }
+        }
+
+        return $result;
     }
 
     /**
