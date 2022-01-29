@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ByTIC\Html\Html;
 
 use ByTIC\Html\Dom\DomBuilder;
+use Nip\Utility\Json;
 
 /**
  * Class HtmlBuilder
@@ -153,6 +156,7 @@ class HtmlBuilder extends DomBuilder
                     $html .= " $name='" . Json::htmlEncode($value) . "'";
                 }
             } elseif ($value !== null) {
+                $value = (string) $value;
                 $html .= " $name=\"" . static::encode($value) . '"';
             }
         }

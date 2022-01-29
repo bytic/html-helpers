@@ -1,7 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ByTIC\Html\Dom;
 
+use ByTIC\Html\Html\HtmlElement;
+
+/**
+ *
+ */
 class DomElements implements \IteratorAggregate, \ArrayAccess, \Countable
 {
     /**

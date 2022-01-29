@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ByTIC\Html\Dom;
 
 /**
@@ -18,7 +20,7 @@ class DomElement implements \ArrayAccess
     /**
      * Element attributes.
      *
-     * @var  array
+     * @var  DomAttributes
      */
     protected $attribs;
 
@@ -36,14 +38,14 @@ class DomElement implements \ArrayAccess
      * @param mixed $content Element content.
      * @param array $attribs Element attributes.
      */
-    public function __construct($name, $content = null, $attribs = [])
+    public function __construct(string $name, $content = null, $attribs = [])
     {
         if (is_array($content)) {
             $content = new DomElements($content);
         }
 
         $this->name = $name;
-        $this->attribs = $attribs;
+        $this->attribs = new DomAttributes($attribs);
         $this->content = $content;
     }
 
@@ -56,7 +58,7 @@ class DomElement implements \ArrayAccess
      */
     public function toString($forcePair = false)
     {
-        return DomBuilder::create($this->name, $this->content, $this->attribs, $forcePair);
+        return DomBuilder::create($this->name, $this->content, $this->attribs->toArray(), $forcePair);
     }
 
     /**
@@ -80,8 +82,8 @@ class DomElement implements \ArrayAccess
     {
         try {
             return $this->toString();
-        } catch (\Throwable $e) {
-            return (string)$e;
+        } catch (\Throwable $exception) {
+            return (string)$exception;
         }
     }
 
@@ -119,11 +121,7 @@ class DomElement implements \ArrayAccess
      */
     public function getAttribute($name, $default = null)
     {
-        if (empty($this->attribs[$name])) {
-            return $default;
-        }
-
-        return $this->attribs[$name];
+        return $this->attribs->getAttribute($name, $default);
     }
 
     /**
@@ -136,7 +134,7 @@ class DomElement implements \ArrayAccess
      */
     public function setAttribute($name, $value)
     {
-        $this->attribs[$name] = $value;
+        $this->attribs->setAttribute($name, $value);
 
         return $this;
     }
@@ -152,7 +150,7 @@ class DomElement implements \ArrayAccess
      */
     public function hasAttribute($name)
     {
-        return isset($this->attribs[$name]);
+        return $this->attribs->hasAttribute($name);
     }
 
     /**
@@ -160,13 +158,11 @@ class DomElement implements \ArrayAccess
      *
      * @param string $name
      *
-     * @return  static
-     *
-     * @since  3.5.3
+     * @return  $this
      */
     public function removeAttribute($name)
     {
-        unset($this->attribs[$name]);
+        $this->attribs->removeAttribute($name);
 
         return $this;
     }
@@ -174,7 +170,7 @@ class DomElement implements \ArrayAccess
     /**
      * Get all attributes.
      *
-     * @return  array All attributes.
+     * @return array|DomAttributes
      */
     public function getAttributes()
     {
@@ -190,7 +186,7 @@ class DomElement implements \ArrayAccess
      */
     public function setAttributes($attribs)
     {
-        $this->attribs = $attribs;
+        $this->attribs->setAttributes($attribs);
 
         return $this;
     }
@@ -229,7 +225,7 @@ class DomElement implements \ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->attribs[$offset]);
+        return $this->attribs->offsetExists($offset);
     }
 
     /**
@@ -241,11 +237,7 @@ class DomElement implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        if (!$this->offsetExists($offset)) {
-            return null;
-        }
-
-        return $this->attribs[$offset];
+        return $this->attribs->offsetGet($offset);
     }
 
     /**
@@ -258,7 +250,7 @@ class DomElement implements \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        $this->attribs[$offset] = $value;
+        $this->attribs->offsetSet($offset, $value);
     }
 
     /**
@@ -270,6 +262,6 @@ class DomElement implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        unset($this->attribs[$offset]);
+        $this->attribs->offsetUnset($offset);
     }
 }

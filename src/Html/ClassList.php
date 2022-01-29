@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ByTIC\Html\Html;
+
+use InvalidArgumentException;
 
 /**
  * Class ClassList
@@ -19,6 +23,10 @@ class ClassList
         $this->classes = $classes;
     }
 
+    /**
+     * @param $classes
+     * @return ClassList
+     */
     public static function create($classes): ClassList
     {
         if ($classes instanceof static) {
@@ -31,7 +39,7 @@ class ClassList
             return new static($classes);
         }
 
-        throw new \InvalidArgumentException("Classes should be string or array");
+        throw new InvalidArgumentException("Classes should be string or array");
     }
 
     /**
@@ -61,6 +69,37 @@ class ClassList
 
         $this->classes = array_values(array_unique(array_merge($classes, $args)));
 
+        return $this;
+    }
+
+    /**
+     * @param $class
+     * @return $this
+     */
+    public function remove($class): self
+    {
+        $key = array_search($class, $this->classes);
+        if ($key !== false) {
+            unset($this->classes[$key]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param $class
+     * @return bool
+     */
+    public function contains($class): bool
+    {
+        return in_array($class, $this->classes);
+    }
+
+    /**
+     * @param $class
+     * @return void
+     */
+    public function toggle($class): self
+    {
         return $this;
     }
 

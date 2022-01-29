@@ -8,3 +8,5 @@ html helpers for bytic framework
 * https://github.com/ventoviro/windwalker-dom/blob/master/HtmlElement.php
 * https://github.com/Airmanbzh/php-html-generator
 * https://github.com/maveius/liphte
+* https://github.com/spatie/html-element
+* https://github.com/jtolj/html-attributes

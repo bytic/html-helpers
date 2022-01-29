@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ByTIC\Html\Tags\Forms;
 
 use ByTIC\Html\Html\HtmlElement;
@@ -64,6 +66,12 @@ class Select extends AbstractTag
         return new static($name, $options, $attribs, $selected, $multiple);
     }
 
+    /**
+     * @param Traversable $collection
+     * @param $text
+     * @param $value
+     * @return void
+     */
     public function addOptionsFromTraversable(Traversable $collection, $text = null, $value = null)
     {
         foreach ($collection as $item) {
@@ -119,7 +127,7 @@ class Select extends AbstractTag
      *
      * @return  string
      */
-    public function toString($forcePair = false)
+    public function toString($forcePair = false): string
     {
         $tmpContent = clone $this->getContent();
         $tmpName = $this->getAttribute('name');
@@ -177,9 +185,9 @@ class Select extends AbstractTag
         $value = (string)$value;
 
         if ($this->multiple) {
-            return in_array($value, (array) $selected);
+            return in_array($value, (array)$selected);
         } else {
-            return $value == (string) $selected;
+            return $value == (string)$selected;
         }
     }
 

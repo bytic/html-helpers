@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ByTIC\Html\Tests;
 
-use PHPUnit\Framework\TestCase;
+use Bytic\Phpqa\PHPUnit\TestCase;
 
 /**
  * Class AbstractTest
