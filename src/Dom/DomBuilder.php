@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ByTIC\Html\Dom;
 
+use Nip\Utility\Arr;
+
 /**
  * Class DomBuilder
  * @package ByTIC\Html\Dom
@@ -48,7 +50,7 @@ class DomBuilder
     {
         $string = '';
 
-        foreach ((array) $attribs as $key => $value) {
+        foreach ($attribs as $key => $value) {
             if ($value === true) {
                 $string .= ' ' . $key;
 

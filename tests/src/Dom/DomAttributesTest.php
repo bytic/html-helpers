@@ -96,8 +96,8 @@ class DomAttributesTest extends AbstractTest
         $attributes = new DomAttributes();
 
         static::assertSame(
-            'foo bar',
-            (string)$attributes->addClass(['foo', 'bar'])->toArray()['class']
+            ['foo', 'bar'],
+            $attributes->addClass(['foo', 'bar'])->toArray()['class']
         );
     }
 
@@ -199,5 +199,26 @@ class DomAttributesTest extends AbstractTest
         $only_for = $attributes->without(['id', 'class']);
 
         static::assertEquals('for="carditem"', (string)$only_for);
+    }
+
+    /** @test */
+    public function it_can_convet_to_array()
+    {
+        $array = ['class' => ['test', 'foe'], 'id' => 'card', 'for' => 'carditem'];
+        $attributes = new DomAttributes($array);
+        self::assertSame(
+            ['class' => ['test', 'foe'], 'id' => 'card', 'for' => 'carditem'],
+            $attributes->toArray()
+        );
+    }
+
+    /** @test */
+    public function it_can_be_traversed()
+    {
+        $array = ['id' => 'card', 'for' => 'carditem'];
+        $attributes = new DomAttributes($array);
+        foreach ($attributes as $attribute => $value) {
+            static::assertEquals($value, $array[$attribute]);
+        }
     }
 }

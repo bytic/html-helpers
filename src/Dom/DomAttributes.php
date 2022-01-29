@@ -307,11 +307,15 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
 
     public function toArray(): array
     {
-        if (empty($this->classes)) {
-            return $this->attributes;
+        $attributes = $this->attributes;
+        if ($this->getClassList()->count()) {
+            $attributes['class'] = $this->getClassList()->getClasses();
+        } else {
+            unset($attributes['class']);
         }
 
-        return array_merge($this->attributes, ['class' => implode(' ', $this->classes)]);
+
+        return $attributes;
     }
 
     /**

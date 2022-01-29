@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ByTIC\Html\Html;
 
+use ByTIC\Html\Dom\DomAttributes;
 use ByTIC\Html\Dom\DomBuilder;
 use Nip\Utility\Json;
 
@@ -114,12 +115,14 @@ class HtmlBuilder extends DomBuilder
     /**
      * buildAttributes
      *
-     * @param array $attribs
+     * @param array|DomAttributes $attribs
      *
      * @return  string
      */
-    public static function buildAttributes($attribs)
+    public static function buildAttributes($attribs): string
     {
+        $attribs = is_object($attribs) ? $attribs->toArray() : $attribs;
+
         $attribs = static::orderAttributes($attribs);
         $attribs = static::mapAttrValues($attribs);
 

@@ -104,6 +104,14 @@ class ClassList
     }
 
     /**
+     * @return int|void
+     */
+    public function count()
+    {
+        return count($this->classes);
+    }
+
+    /**
      * @return string
      */
     public function __toString()
