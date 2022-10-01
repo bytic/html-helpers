@@ -62,7 +62,7 @@ class DomElements implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return  \Traversable
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->elements);
     }
@@ -74,7 +74,7 @@ class DomElements implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return boolean true on success or false on failure.
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->elements[$offset]);
     }
@@ -86,7 +86,7 @@ class DomElements implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return mixed Can return all value types.
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if (!$this->strict && !$this->offsetExists($offset)) {
             return null;
@@ -103,7 +103,7 @@ class DomElements implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($offset === '' || $offset === null) {
             array_push($this->elements, $value);
@@ -121,7 +121,7 @@ class DomElements implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (!$this->strict && !$this->offsetExists($offset)) {
             return;
@@ -135,7 +135,7 @@ class DomElements implements \IteratorAggregate, \ArrayAccess, \Countable
      *
      * @return int The custom count as an integer.
      */
-    public function count()
+    public function count(): int
     {
         return count($this->elements);
     }

@@ -10,7 +10,7 @@ use ByTIC\Html\Html\HtmlBuilder;
 /**
  *
  */
-class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
+class DomAttributes implements \IteratorAggregate, \ArrayAccess, \Countable
 {
 
     /** @var array */
@@ -187,7 +187,7 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
     {
         if (is_array($class)) {
             $classes = $class;
-        }elseif ($class instanceof ClassList) {
+        } elseif ($class instanceof ClassList) {
             $classes = $class->getClasses();
         } else {
             $classes = array_filter(explode(' ', $class), 'strlen');
@@ -259,7 +259,7 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
      *
      * @return string|ClassList
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if (isset($this->attributes[$offset])) {
             return $this->attributes[$offset];
@@ -275,7 +275,7 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
      *
      * @return void;
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->attributes[$offset] = $value;
     }
@@ -283,7 +283,7 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
     /**
      * @inheritDoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->attributes[$offset]);
     }
@@ -301,7 +301,7 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
      *
      * @return  \Traversable
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->attributes);
     }
@@ -375,7 +375,7 @@ class DomAttributes implements \IteratorAggregate,\ArrayAccess, \Countable
     /**
      * @inheritDoc
      */
-    public function count()
+    public function count(): int
     {
         return count($this->attributes);
     }

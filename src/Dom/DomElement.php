@@ -223,7 +223,7 @@ class DomElement implements \ArrayAccess
      * @return boolean True on success or false on failure.
      *                 The return value will be casted to boolean if non-boolean was returned.
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->attribs->offsetExists($offset);
     }
@@ -235,7 +235,7 @@ class DomElement implements \ArrayAccess
      *
      * @return mixed Can return all value types.
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->attribs->offsetGet($offset);
     }
@@ -248,7 +248,7 @@ class DomElement implements \ArrayAccess
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->attribs->offsetSet($offset, $value);
     }
@@ -260,7 +260,7 @@ class DomElement implements \ArrayAccess
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->attribs->offsetUnset($offset);
     }

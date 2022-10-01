@@ -104,9 +104,9 @@ class ClassList
     }
 
     /**
-     * @return int|void
+     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->classes);
     }
